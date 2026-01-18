@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,30 +8,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="bg-light">
+
+<body>
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">Últimos Movimientos</h2>
-                        <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Depósito
-                                <span class="badge bg-success rounded-pill">+$500.00</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Transferencia a Juan Pérez
-                                <span class="badge bg-danger rounded-pill">-$200.00</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Pago de servicios
-                                <span class="badge bg-danger rounded-pill">-$150.00</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Depósito
-                                <span class="badge bg-success rounded-pill">+$1,000.00</span>
-                            </li>
+                        <ul id="transactions-list" class="list-group list-group-flush mb-4">
+                            <!-- Transactions will be loaded here -->
+                            <li class="list-group-item text-center">Cargando movimientos...</li>
                         </ul>
                         <div class="text-center">
                             <a href="menu.html" class="btn btn-primary">Volver al Menú Principal</a>
@@ -40,7 +28,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Bottom Navigation -->
     <nav class="navbar fixed-bottom bottom-nav">
         <div class="container-fluid d-flex justify-content-around">
@@ -58,7 +46,35 @@
             </a>
         </div>
     </nav>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        const transactions = Wallet.getTransactions();
+        const list = document.getElementById('transactions-list');
+        list.innerHTML = '';
+
+        if (transactions.length === 0) {
+            list.innerHTML = '<li class="list-group-item text-center">No hay movimientos recientes.</li>';
+        } else {
+            transactions.forEach(t => {
+                const isPositive = t.amount > 0;
+                const sign = isPositive ? '+' : '';
+                const colorClass = isPositive ? 'bg-success' : 'bg-danger';
+
+                const item = document.createElement('li');
+                item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                item.innerHTML = `
+                    <div>
+                        <strong>${t.type}</strong><br>
+                        <small class="text-muted">${t.description} - ${t.date}</small>
+                    </div>
+                    <span class="badge ${colorClass} rounded-pill">${sign}${formatCurrency(t.amount)}</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+    </script>
 </body>
+
 </html>

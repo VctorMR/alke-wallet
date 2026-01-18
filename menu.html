@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,28 +8,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="bg-light">
+
+<body>
     <div class="container">
         <div class="row justify-content-center align-items-start pt-4 min-vh-100">
             <div class="col-12 col-md-8">
-                <div class="card shadow">
-                    <div class="card-body text-center">
-                        <h2 class="card-title mb-4">Menú Principal</h2>
-                        <div class="mb-4">
-                            <h4>Saldo actual: <span class="text-success">$1,250.00</span></h4>
-                        </div>
+                <div class="d-flex align-items-center mb-4 px-3">
+                    <img src="assets/img/avatar.jpg" alt="User Avatar" class="user-avatar me-3">
+                    <div>
+                        <h5 class="mb-0">Hola, Admin</h5>
+                        <small class="text-muted">Bienvenido de nuevo</small>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="fas fa-bell text-muted" style="font-size: 1.2rem;"></i>
                     </div>
                 </div>
-                <div class="list-group shadow-sm justify-content-center align-items-center mt-4 accordion  accordion-body">
-                    <button class="list-group-item list-group-item-action">Opción 1: Ver Movimientos</button>
-                    <button class="list-group-item list-group-item-action">Opción 2: Transferir Dinero</button>
-                    <button class="list-group-item list-group-item-action">Opción 3: Configuración</button>
+
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center py-5">
+                        <small class="text-muted text-uppercase fw-bold" style="letter-spacing: 1px;">Saldo Total</small>
+                        <h1 class="display-4 fw-bold mt-2 mb-0"><span id="balance-display"></span></h1>
+                        <p class="text-success mt-2 mb-0"><i class="fas fa-arrow-up sm-icon"></i> 5.4% este mes</p>
+                    </div>
+                </div>
+                <div
+                    class="list-group shadow-sm justify-content-center align-items-center mt-4 accordion accordion-body">
+                    <button id="btn-deposit" class="list-group-item list-group-item-action">Depositar</button>
+                    <button id="btn-send" class="list-group-item list-group-item-action">Enviar Dinero</button>
+                    <button id="btn-transactions" class="list-group-item list-group-item-action">Últimos
+                        Movimientos</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    
+
+
     <!-- Bottom Navigation -->
     <nav class="navbar fixed-bottom bottom-nav">
         <div class="container-fluid d-flex justify-content-around">
@@ -46,7 +60,26 @@
             </a>
         </div>
     </nav>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Display Balance
+        document.getElementById('balance-display').textContent = formatCurrency(Wallet.getBalance());
+
+        // Navigation Events
+        document.getElementById('btn-deposit').addEventListener('click', () => {
+            window.location.href = 'deposit.html';
+        });
+
+        document.getElementById('btn-send').addEventListener('click', () => {
+            window.location.href = 'sendmoney.html';
+        });
+
+        document.getElementById('btn-transactions').addEventListener('click', () => {
+            window.location.href = 'transactions.html';
+        });
+    </script>
 </body>
+
 </html>

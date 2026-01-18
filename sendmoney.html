@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +8,40 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="bg-light">
+
+<body>
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-12 col-md-8">
                 <div class="card shadow">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">Enviar Dinero</h2>
-                        <form class="mb-4">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar en la agenda de transferencias" aria-label="Buscar contacto">
-                                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+
+                        <!-- Contact Selection -->
+                        <div class="mb-4">
+                            <h5>Seleccionar Contacto</h5>
+                            <div id="contacts-list" class="list-group mb-3"
+                                style="max-height: 200px; overflow-y: auto;">
+                                <!-- Contacts will be loaded here -->
+                                <p class="text-muted text-center p-3">No hay contactos guardados.</p>
                             </div>
-                        </form>
-                        <div class="text-center">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addContactModal">Agregar nuevo contacto</button>
+                        </div>
+
+                        <div class="text-center d-grid gap-2">
+                            <button class="btn btn-primary" id="btn-send-money" disabled>Enviar Dinero a Contacto
+                                Seleccionado</button>
+                            <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                data-bs-target="#addContactModal">Agregar nuevo contacto</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </div>
 
     <!-- Modal for adding new contact -->
-    <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -39,9 +49,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="add-contact-form">
                         <div class="mb-3">
-                            <label for="contactName" class="form-label">Nombre</label>
+                            <label for="contactName" class="form-label">Nombre y Apellido</label>
                             <input type="text" class="form-control" id="contactName" required>
                         </div>
                         <div class="mb-3">
@@ -49,19 +59,27 @@
                             <input type="email" class="form-control" id="contactEmail" required>
                         </div>
                         <div class="mb-3">
-                            <label for="contactPhone" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="contactPhone">
+                            <label for="contactCBU" class="form-label">Número de CBU</label>
+                            <input type="text" class="form-control" id="contactCBU" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactAlias" class="form-label">Alias</label>
+                            <input type="text" class="form-control" id="contactAlias" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactBank" class="form-label">Nombre del Banco</label>
+                            <input type="text" class="form-control" id="contactBank" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Agregar Contacto</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Agregar Contacto</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Bottom Navigation -->
     <nav class="navbar fixed-bottom bottom-nav">
         <div class="container-fluid d-flex justify-content-around">
@@ -81,5 +99,98 @@
     </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        let selectedContactIndex = -1;
+
+        // Load Contacts
+        function renderContacts() {
+            const contacts = Wallet.getContacts();
+            const list = document.getElementById('contacts-list');
+            list.innerHTML = '';
+
+            if (contacts.length === 0) {
+                list.innerHTML = '<p class="text-muted text-center p-3">No hay contactos guardados.</p>';
+                return;
+            }
+
+            contacts.forEach((contact, index) => {
+                const btn = document.createElement('button');
+                btn.className = `list-group-item list-group-item-action ${index === selectedContactIndex ? 'active' : ''}`;
+                btn.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">${contact.name}</h5>
+                        <small>${contact.bank}</small>
+                    </div>
+                    <p class="mb-1">CBU: ${contact.cbu}</p>
+                    <small>Alias: ${contact.alias}</small>
+                `;
+                btn.onclick = () => selectContact(index);
+                list.appendChild(btn);
+            });
+        }
+
+        function selectContact(index) {
+            selectedContactIndex = index;
+            document.getElementById('btn-send-money').disabled = false;
+            renderContacts();
+        }
+
+        // Add Contact Form
+        document.getElementById('add-contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newContact = {
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                cbu: document.getElementById('contactCBU').value,
+                alias: document.getElementById('contactAlias').value,
+                bank: document.getElementById('contactBank').value
+            };
+
+            Wallet.addContact(newContact);
+
+            // Close modal and reset
+            const modalEl = document.getElementById('addContactModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            e.target.reset();
+
+            renderContacts();
+            alert('Contacto agregado exitosamente.');
+        });
+
+        // Send Money Logic
+        document.getElementById('btn-send-money').addEventListener('click', () => {
+            if (selectedContactIndex === -1) return;
+            const contact = Wallet.getContacts()[selectedContactIndex];
+
+            // For simplicity, using prompt for amount since UI didn't specify where to input amount for transfer
+            // Ideally we'd have an input field. I'll use prompt() as it's a quick "popup" like way or add an input.
+            // Requirement says "Al seleccionar un contacto y hacer clic en Enviar dinero", showing confirmation.
+            // Implies amount might be pre-entered or asked. I'll use prompt for current UI constraints or add input.
+            // Let's use prompt for simplicity to keep UI clean as per current structure.
+
+            const amountStr = prompt(`Ingrese el monto a enviar a ${contact.name}:`);
+            if (amountStr) {
+                const amount = parseFloat(amountStr);
+                if (amount > 0 && amount <= Wallet.getBalance()) {
+                    Wallet.setBalance(Wallet.getBalance() - amount);
+                    Wallet.addTransaction({
+                        type: 'Transferencia',
+                        amount: -amount,
+                        description: `Transferencia a ${contact.name}`
+                    });
+                    alert('Transferencia realizada con éxito.');
+                    window.location.href = 'menu.html';
+                } else {
+                    alert('Saldo insuficiente o monto inválido.');
+                }
+            }
+        });
+
+        // Initial render
+        renderContacts();
+    </script>
 </body>
+
 </html>
