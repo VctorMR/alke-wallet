@@ -1,9 +1,9 @@
 /**
- * Alke Wallet - Core Logic
- * Handles state management using localStorage and shared UI functions.
+ * Alke Wallet - Lógica Principal
+ * Maneja el estado de la aplicación usando localStorage y funciones compartidas de UI
  */
 
-// Constants
+// Constantes
 const DATA_KEYS = {
     BALANCE: 'wallet_balance',
     TRANSACTIONS: 'wallet_transactions',
@@ -17,7 +17,7 @@ const DEFAULT_DATA = {
     CONTACTS: []
 };
 
-// Utils
+// Utilidades
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
 };
@@ -31,7 +31,7 @@ const saveToStorage = (key, data) => {
     localStorage.setItem(key, JSON.stringify(data));
 };
 
-// State Management
+// Gestión de Estado
 const Wallet = {
     getBalance: () => getFromStorage(DATA_KEYS.BALANCE, DEFAULT_DATA.BALANCE),
     setBalance: (amount) => saveToStorage(DATA_KEYS.BALANCE, amount),
@@ -55,7 +55,6 @@ const Wallet = {
     },
 
     login: (email, password) => {
-        // Hardcoded credentials for demo
         if (email === 'admin@alkewallet.com' && password === '123456') {
             localStorage.setItem(DATA_KEYS.USER, JSON.stringify({ email, name: 'Admin User' }));
             return true;
@@ -73,9 +72,11 @@ const Wallet = {
     }
 };
 
-// Initialization check (skip for login page)
-if (!window.location.pathname.includes('login.html')) {
+// Verificación de autenticación
+if (!window.location.pathname.includes('login.html') && !window.location.pathname.includes('index.html')) {
     if (!Wallet.currentUser()) {
         window.location.href = 'login.html';
     }
 }
+
+

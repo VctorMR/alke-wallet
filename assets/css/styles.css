@@ -1,187 +1,271 @@
-/* Revolut-inspired Dark Theme */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+/* ==============================
+   FUENTES
+   ============================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+/* ==============================
+   VARIABLES GLOBALES (THEME)
+   Cambia colores y radios aquí
+   ============================== */
 :root {
-    --bg-color: #000000;
-    --card-bg: #191919;
-    --text-primary: #FFFFFF;
-    --text-secondary: #8B8B8B;
-    --accent-blue: #2962FF;
-    --accent-blue-hover: #1e4bd1;
-    --danger-red: #FF3B30;
-    --success-green: #34C759;
-    --border-radius: 16px;
-    --input-bg: #2C2C2C;
+  --bg-color: #000;
+  --card-bg: #191919;
+
+  --text-primary: #fff;
+  --text-secondary: #d0d0d0;
+
+  --accent-blue: #2962ff;
+  --accent-blue-hover: #1e4bd1;
+
+  --success-green: #34c759;
+  --danger-red: #ff3b30;
+
+  --input-bg: #2c2c2c;
+  --border-radius: 16px;
 }
 
+/* ==============================
+   ESTILOS BASE
+   ============================== */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    color: var(--text-primary);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .text-muted {
-    color: var(--text-secondary) !important;
+  color: var(--text-secondary) !important;
 }
 
-/* Cards */
+/* ==============================
+   CARDS
+   ============================== */
 .card {
-    background-color: var(--card-bg);
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  background-color: var(--card-bg);
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .card-title {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
-/* Forms & Inputs */
+/* ==============================
+   LAYOUT RESPONSIVE
+   Desktop / Mobile
+   ============================== */
+#desktop-landing,
+#mobile-app {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 991px) {
+  #mobile-app {
+    display: block;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  #desktop-landing {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    text-align: center;
+  }
+}
+
+/* ==============================
+   FORMULARIOS
+   ============================== */
+.form-label {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
 .form-control {
-    background-color: var(--input-bg);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    color: var(--text-primary);
-    padding: 12px 16px;
-    transition: all 0.3s ease;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: #999;
 }
 
 .form-control:focus {
-    background-color: #333;
-    border-color: var(--accent-blue);
-    color: var(--text-primary);
-    box-shadow: 0 0 0 4px rgba(41, 98, 255, 0.2);
+  background-color: #333;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 4px rgba(41, 98, 255, 0.2);
+  color: var(--text-primary);
 }
 
-.form-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-/* Buttons */
+/* ==============================
+   BOTONES
+   ============================== */
 .btn-primary {
-    background-color: var(--accent-blue);
-    border: none;
-    border-radius: 40px; /* Pill shape */
-    padding: 12px 24px;
-    font-weight: 600;
-    transition: transform 0.2s;
-}
-
-.btn-primary:active {
-    transform: scale(0.98);
+  padding: 12px 24px;
+  border-radius: 40px;
+  border: none;
+  background-color: var(--accent-blue);
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-blue-hover);
+  background-color: var(--accent-blue-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
 }
 
 .btn-outline-secondary {
-    border-color: #444;
-    color: var(--text-secondary);
-    border-radius: 40px;
+  border-radius: 40px;
+  border-color: #444;
+  color: var(--text-secondary);
 }
 
 .btn-outline-secondary:hover {
-    background-color: #333;
-    color: var(--text-primary);
+  background-color: #333;
+  color: var(--text-primary);
 }
 
-/* Navigation */
+/* ==============================
+   NAVEGACIÓN INFERIOR (MOBILE)
+   ============================== */
 .bottom-nav {
-    background-color: rgba(25, 25, 25, 0.95);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid #333;
-    padding: 12px 0;
+  padding: 12px 0;
+  background-color: rgba(25, 25, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #333;
 }
 
 .nav-link {
-    color: var(--text-secondary);
-    text-align: center;
-    font-size: 0.75rem;
-    transition: color 0.3s;
-}
-
-.nav-link i {
-    font-size: 1.4rem;
-    margin-bottom: 4px;
-}
-
-.nav-link.active {
-    color: var(--accent-blue);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  transition: color 0.3s;
 }
 
 .nav-link:hover {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
-/* List Groups (Menu & Transactions) */
+.nav-link.active {
+  color: var(--accent-blue);
+}
+
+/* Iconos */
+.material-icons {
+  vertical-align: middle;
+}
+
+.nav-link .material-icons {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+/* ==============================
+   LISTAS
+   ============================== */
 .list-group-item {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #333;
-    color: var(--text-primary);
-    padding: 16px;
+  padding: 16px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #333;
+  color: var(--text-primary);
 }
 
 .list-group-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-.list-group-item-action:hover, .list-group-item-action:focus {
-    background-color: #252525;
-    color: var(--text-primary);
+.list-group-item-action:hover,
+.list-group-item-action:focus {
+  background-color: #252525;
 }
 
-/* Badges */
+/* ==============================
+   BADGES / ESTADOS
+   ============================== */
 .badge {
-    padding: 8px 12px;
-    font-weight: 600;
+  padding: 8px 12px;
+  font-weight: 600;
 }
 
 .bg-success {
-    background-color: rgba(52, 199, 89, 0.2) !important;
-    color: #34C759;
+  background-color: rgba(52, 199, 89, 0.2) !important;
+  color: var(--success-green);
 }
 
 .bg-danger {
-    background-color: rgba(255, 59, 48, 0.2) !important;
-    color: #FF3B30;
+  background-color: rgba(255, 59, 48, 0.2) !important;
+  color: var(--danger-red);
 }
 
-/* User Profile Image */
+/* ==============================
+   USUARIO
+   ============================== */
 .user-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent-blue);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-blue);
 }
 
-/* Modal */
+/* ==============================
+   MODALES
+   ============================== */
 .modal-content {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
-    color: var(--text-primary);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: var(--border-radius);
 }
 
-.modal-header {
-    border-bottom: 1px solid #333;
-}
-
+.modal-header,
 .modal-footer {
-    border-top: 1px solid #333;
+  border-color: #333;
 }
 
 .btn-close {
-    filter: invert(1);
+  filter: invert(1);
+}
+
+/* ==============================
+   UTILIDADES
+   ============================== */
+.visibility-toggle {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.visibility-toggle:hover {
+  opacity: 0.7;
+}
+
+.transactions-list {
+  max-height: 250px;
+  overflow-y: auto;
 }

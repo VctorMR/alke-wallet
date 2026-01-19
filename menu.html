@@ -13,61 +13,166 @@
     <div class="container">
         <div class="row justify-content-center align-items-start pt-4 min-vh-100">
             <div class="col-12 col-md-8">
-                <div class="d-flex align-items-center mb-4 px-3">
-                    <img src="assets/img/avatar.jpg" alt="User Avatar" class="user-avatar me-3">
+                <!-- Encabezado con Avatar -->
+                <div class="d-flex align-items-center mb-4 px-3" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#profileModal">
+                    <img src="assets/img/avatar.jpg" alt="Avatar Usuario" class="user-avatar me-3">
                     <div>
                         <h5 class="mb-0">Hola, Admin</h5>
                         <small class="text-muted">Bienvenido de nuevo</small>
                     </div>
                     <div class="ms-auto">
-                        <i class="fas fa-bell text-muted" style="font-size: 1.2rem;"></i>
+                        <span class="material-icons text-muted" style="font-size: 1.2rem; display: none;">notifications</span>
                     </div>
                 </div>
 
+                <!-- Saldo Total (Ocultable) -->
                 <div class="card shadow mb-4">
-                    <div class="card-body text-center py-5">
+                    <div class="card-body text-center py-5 position-relative">
+                        <button class="btn btn-sm btn-link position-absolute top-0 end-0 m-2 visibility-toggle" id="toggle-balance" title="Ocultar saldo">
+                            <span class="material-icons" style="font-size: 1.2rem;">visibility</span>
+                        </button>
                         <small class="text-muted text-uppercase fw-bold" style="letter-spacing: 1px;">Saldo Total</small>
                         <h1 class="display-4 fw-bold mt-2 mb-0"><span id="balance-display"></span></h1>
-                        <p class="text-success mt-2 mb-0"><i class="fas fa-arrow-up sm-icon"></i> 5.4% este mes</p>
+                        <p class="text-success mt-2 mb-0"><span class="material-icons sm-icon">trending_up</span> 5.4% este mes</p>
                     </div>
                 </div>
-                <div
-                    class="list-group shadow-sm justify-content-center align-items-center mt-4 accordion accordion-body">
-                    <button id="btn-deposit" class="list-group-item list-group-item-action">Depositar</button>
-                    <button id="btn-send" class="list-group-item list-group-item-action">Enviar Dinero</button>
-                    <button id="btn-transactions" class="list-group-item list-group-item-action">Últimos
-                        Movimientos</button>
+
+                <!-- Últimos Movimientos (Ocultables) -->
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center py-3">
+                        <h6 class="mb-0">Últimos Movimientos</h6>
+                        <button class="btn btn-sm btn-link visibility-toggle" id="toggle-transactions" title="Ocultar movimientos">
+                            <span class="material-icons" style="font-size: 1.2rem;">visibility</span>
+                        </button>
+                    </div>
+                    <div class="card-body transactions-list" id="transactions-container">
+                        <p class="text-muted text-center">Cargando movimientos...</p>
+                    </div>
+                    <div class="card-footer border-0 text-center py-2">
+                        <a href="transactions.html" class="small text-decoration-none">Ver todos los movimientos →</a>
+                    </div>
+                </div>
+
+                <!-- Menú de Opciones -->
+                <div class="list-group shadow-sm">
+                    <button id="btn-deposit" class="list-group-item list-group-item-action">
+                        <span class="material-icons" style="vertical-align: middle; margin-right: 10px;">account_balance_wallet</span>
+                        Depositar
+                    </button>
+                    <button id="btn-send" class="list-group-item list-group-item-action">
+                        <span class="material-icons" style="vertical-align: middle; margin-right: 10px;">send</span>
+                        Enviar Dinero
+                    </button>
+                    <button id="btn-transactions" class="list-group-item list-group-item-action">
+                        <span class="material-icons" style="vertical-align: middle; margin-right: 10px;">history</span>
+                        Todos los Movimientos
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Bottom Navigation -->
-    <nav class="navbar fixed-bottom bottom-nav">
-        <div class="container-fluid d-flex justify-content-around">
-            <a href="menu.html" class="nav-link active">
-                <i class="fas fa-home"></i><br>Inicio
-            </a>
-            <a href="deposit.html" class="nav-link">
-                <i class="fas fa-plus"></i><br>Depositar
-            </a>
-            <a href="sendmoney.html" class="nav-link">
-                <i class="fas fa-paper-plane"></i><br>Enviar
-            </a>
-            <a href="transactions.html" class="nav-link">
-                <i class="fas fa-list"></i><br>Movimientos
-            </a>
+    <!-- Modal Perfil de Usuario -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Perfil de Usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="assets/img/avatar.jpg" class="user-avatar mb-3" style="width: 80px; height: 80px;">
+                    <form>
+                        <div class="mb-3 text-start">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" value="Admin User" readonly>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label class="form-label">Correo</label>
+                            <input type="email" class="form-control" value="admin@alkewallet.com" readonly>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label class="form-label">Número de Cuenta</label>
+                            <input type="text" class="form-control" value="000-123456-789" readonly>
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-secondary" disabled>Editar Perfil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </nav>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
-        // Display Balance
+        // Mostrar saldo
         document.getElementById('balance-display').textContent = formatCurrency(Wallet.getBalance());
 
-        // Navigation Events
+        // Cargar últimos 3 movimientos
+        function renderTransactions() {
+            const allTransactions = Wallet.getTransactions();
+            const lastThree = allTransactions.slice(0, 3);
+            const container = document.getElementById('transactions-container');
+            
+            if (lastThree.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">Sin movimientos aún</p>';
+                return;
+            }
+
+            container.innerHTML = lastThree.map(transaction => `
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                    <div>
+                        <p class="mb-0 fw-500" style="color: #e0e0e0;">${transaction.description}</p>
+                        <small class="text-muted">${transaction.date}</small>
+                    </div>
+                    <div class="text-end">
+                        <p class="mb-0 ${transaction.type.toLowerCase() === 'depósito' ? 'text-success' : 'text-danger'}">
+                            ${transaction.type.toLowerCase() === 'depósito' ? '+' : '-'} ${formatCurrency(transaction.amount)}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderTransactions();
+
+        // Ocultar/mostrar saldo
+        let balanceVisible = true;
+        document.getElementById('toggle-balance').addEventListener('click', function(e) {
+            e.stopPropagation();
+            balanceVisible = !balanceVisible;
+            const balanceDisplay = document.getElementById('balance-display');
+            const icon = this.querySelector('.material-icons');
+            
+            if (balanceVisible) {
+                balanceDisplay.textContent = formatCurrency(Wallet.getBalance());
+                icon.textContent = 'visibility';
+            } else {
+                balanceDisplay.textContent = '•••••';
+                icon.textContent = 'visibility_off';
+            }
+        });
+
+        // Ocultar/mostrar movimientos
+        let transactionsVisible = true;
+        document.getElementById('toggle-transactions').addEventListener('click', function() {
+            transactionsVisible = !transactionsVisible;
+            const container = document.getElementById('transactions-container');
+            const icon = this.querySelector('.material-icons');
+            
+            if (transactionsVisible) {
+                renderTransactions();
+                icon.textContent = 'visibility';
+            } else {
+                container.innerHTML = '<p class="text-muted text-center">Movimientos ocultos</p>';
+                icon.textContent = 'visibility_off';
+            }
+        });
+
+        // Navegar
         document.getElementById('btn-deposit').addEventListener('click', () => {
             window.location.href = 'deposit.html';
         });
@@ -80,6 +185,24 @@
             window.location.href = 'transactions.html';
         });
     </script>
+
+    <!-- Navegación Inferior -->
+    <nav class="navbar fixed-bottom bottom-nav">
+        <div class="container-fluid d-flex justify-content-around">
+            <a href="menu.html" class="nav-link active">
+                <span class="material-icons">home</span><br>Inicio
+            </a>
+            <a href="deposit.html" class="nav-link">
+                <span class="material-icons">account_balance_wallet</span><br>Depositar
+            </a>
+            <a href="sendmoney.html" class="nav-link">
+                <span class="material-icons">send</span><br>Enviar
+            </a>
+            <a href="transactions.html" class="nav-link">
+                <span class="material-icons">history</span><br>Movimientos
+            </a>
+        </div>
+    </nav>
 </body>
 
 </html>
