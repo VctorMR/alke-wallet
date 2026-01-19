@@ -3,6 +3,12 @@ document.querySelector('form').addEventListener('submit', function (e) {
     const amountInput = document.getElementById('amount');
     const amount = parseFloat(amountInput.value);
 
+    if (isNaN(amount) || amount <= 0) {
+        showNotification('Ingrese un monto válido mayor que 0.', 'danger', 2500);
+        return;
+    }
+
+    // Commit ejemplo para feature/depositos: validar y formatear monto antes de depositar
     if (amount > 0) {
         // Actualizar saldo
         const currentBalance = Wallet.getBalance();
