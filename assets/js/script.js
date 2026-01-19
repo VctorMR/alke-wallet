@@ -79,4 +79,40 @@ if (!window.location.pathname.includes('login.html') && !window.location.pathnam
     }
 }
 
+// Mostrar notificaciones en pantalla (reemplaza alert)
+function showNotification(message, type = 'success', timeout = 2500) {
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.style.position = 'fixed';
+        container.style.top = '16px';
+        container.style.right = '16px';
+        container.style.zIndex = 1060;
+        document.body.appendChild(container);
+    }
+
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.role = 'alert';
+    alert.style.minWidth = '240px';
+    alert.innerHTML = `${message}`;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-close';
+    btn.setAttribute('data-bs-dismiss', 'alert');
+    btn.setAttribute('aria-label', 'Cerrar');
+
+    alert.appendChild(btn);
+    container.appendChild(alert);
+
+    if (timeout > 0) {
+        setTimeout(() => {
+            try { bootstrap.Alert.getOrCreateInstance(alert).close(); } catch (e) { alert.remove(); }
+        }, timeout);
+    }
+    return alert;
+}
+
 
