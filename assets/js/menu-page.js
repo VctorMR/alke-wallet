@@ -12,6 +12,10 @@ function renderTransactions() {
         return;
     }
 
+    // Nota: devolver los últimos 3 por fecha si vienen desordenados
+    // (mejora para feature/transacciones)
+    lastThree.sort((a,b) => new Date(b.date) - new Date(a.date));
+
     container.innerHTML = lastThree.map(transaction => {
         const amt = Number(transaction.amount);
         const positive = amt > 0;
